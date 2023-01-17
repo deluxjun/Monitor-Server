@@ -10,7 +10,7 @@
 ## Features
 
 ⚡️ A Server for managing java application transactions\
-⚡️ Made with Java, Javaagent
+⚡️ Made with Java, Javaagent\
 ⚡️ Collect transaction data and java heap, storage data using sqlite\
 ⚡️ Make statistics from the collected data\
 ⚡️ Java applications health checking\
