@@ -1,20 +1,20 @@
-# EDM Web Client
+# Transaction Monitoring Server
 
-## EDM Web Client gwt(google web toolkit version)
+## Java application transaction Monitoring Server
 
 <h2 align="center">
-  <img src="https://github.com/deluxjun/xedmgui-gwt/blob/main/edmgui-gwt-page1.png" alt="EDM Frontend" />
+  <img src="https://github.com/deluxjun/Monitor-Server/blob/master/Monitor-page1.png" alt="Monitor Server" />
   <br>
 </h2>
 
 ## Features
 
-⚡️ Enterprise documents management client\
-⚡️ Made with GWT, SmartGWT\
-⚡️ Manage documents and images easily such as Explorer/Finder\
-⚡️ This includes user pages and admin pages\
-⚡️ Manage file/folder, create/upload/download/edit file\
-⚡️ Audit files and managing history and versions, properties\
+⚡️ A Server for managing java application transactions\
+⚡️ Made with Java, Javaagent
+⚡️ Collect transaction data and java heap, storage data using sqlite\
+⚡️ Make statistics from the collected data\
+⚡️ Java applications health checking\
+⚡️ Provide APIs for client\
 
 
 ## Authors
