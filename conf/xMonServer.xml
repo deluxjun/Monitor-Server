@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="euc-kr"?>
+<XmAmServer>
+	<!-- IP 지정하여 기동하고자 할 경우 IP 입력 -->
+	<AmassServer MyName="xMon01" IP="" NetworkCompress="false" TransactionTimeoutWaitTime="1" TransactionTimeout="20" LogFolder="log">
+		<LogFilter text="ERROR"/>
+
+		<Agent name="xtorm01" IP="10.1.61.21" PORT="2302" HealthUseYN="Y"/>
+		<Agent name="xtorm02" IP="10.1.61.21" PORT="2303" HealthUseYN="Y"/>
+		<Agent name="xtorm03" IP="10.1.61.21" PORT="2304" HealthUseYN="Y"/>
+		<Agent name="xtorm04" IP="10.1.61.21" PORT="2305" HealthUseYN="Y"/>
+<!-- 		<Agent name="xtorm02" IP="10.1.61.42" PORT="2109" HealthUseYN="Y"/> -->
+		
+		<AmassServerPort 	PoolInitSize="30" port="18883" />
+		<AmassServerReqPort PoolInitSize="30" port="18882" />
+		
+		<AggregateDB
+			AggregateSchedulerYN="Y"
+			ActionSchYN="Y"
+			ResponseSchYN="Y"
+			ExpireSchYN="Y"
+
+			Repeat_ActionSec="1"
+			Repeat_ActionMin="60"
+			Repeat_ActionHour="3600"
+			Repeat_ActionDay="86400"
+			
+			Repeat_ResourceSec="30"
+			Repeat_ResourceMin="60"
+			Repeat_ResourceHour="3600"
+			Repeat_ResourceDay="86400"
+
+			TimerToExpireTrans_Sec="10"
+			TimerToExpireAction_Sec="60"
+			TimerToExpireAction_Min="600"
+			TimerToExpireAction_Hour="3600"
+			TimerToExpireAction_Day="86400"
+
+			TimerToExpireResource_Sec="60"
+			TimerToExpireResource_Min="600"
+			TimerToExpireResource_Hour="3600"
+			TimerToExpireResource_Day="86400"
+
+			IntervalToExpireTrans_Sec="600"
+			IntervalToExpireAction_Sec="36000"
+			IntervalToExpireAction_Min="86400"
+			IntervalToExpireAction_Hour="864000"
+			IntervalToExpireAction_Day="157680000"
+
+			IntervalToExpireResource_Sec="86400"
+			IntervalToExpireResource_Min="86400"
+			IntervalToExpireResource_Hour="864000"
+			IntervalToExpireResource_Day="157680000"
+
+		>
+
+
+	<!--
+			Postponed_TransactionSec="-3"
+
+			Postponed_ResourceSec="-1"
+			Postponed_ResourceMin="-1"
+			Postponed_ResourceHour="-1"
+			Postponed_ResourceDay="-1"
+
+			ExpireRepeat_Sec="10"
+			ExpireRepeat_Min="1"
+
+			Expire_TransActionSec="500"
+
+			Expire_ActionSec="3600"
+			Expire_ActionMin="2880"
+			Expire_ActionHour="360"
+			Expire_ActionDay="30"
+
+			Expire_ResourceSec="7200"
+			Expire_ResourceMin="2880"
+			Expire_ResourceHour="360"
+			Expire_ResourceDay="30"
+	
+			TimerToExpireTrans_Sec="10"
+			TimerToExpireAction_Sec="60"
+			TimerToExpireAction_Min="600"
+			TimerToExpireAction_Hour="3600"
+			TimerToExpireAction_Day="86400"
+
+			TimerToExpireResource_Sec="60"
+			TimerToExpireResource_Min="600"
+			TimerToExpireResource_Hour="3600"
+			TimerToExpireResource_Day="86400"
+
+			IntervalToExpireTrans_Sec="600"
+			IntervalToExpireAction_Sec="3600"
+			IntervalToExpireAction_Min="86400"
+			IntervalToExpireAction_Hour="864000"
+			IntervalToExpireAction_Day="157680000"
+
+			IntervalToExpireResource_Sec="3600"
+			IntervalToExpireResource_Min="86400"
+			IntervalToExpireResource_Hour="864000"
+			IntervalToExpireResource_Day="157680000"
+-->
+	 
+<!-- 		<pool name="Action" driver="oracle.jdbc.driver.OracleDriver" connect="jdbc:oracle:thin:@10.1.61.45:1521:XE" -->
+<!-- 			user="XVARM" pswd="XVARM" count="5" preconnect="FALSE" unicode="FALSE" dbtype="2" -->
+<!-- 			connectionTimeout="5" connectionProperties="oracle.net.CONNECT_TIMEOUT=10000;oracle.jdbc.ReadTimeout=10000" />  -->
+<!-- 		<pool name="Resource" driver="oracle.jdbc.driver.OracleDriver" connect="jdbc:oracle:thin:@10.1.61.45:1521:XE" -->
+<!-- 			user="XVARM" pswd="XVARM" count="5" preconnect="FALSE" unicode="FALSE" dbtype="2" -->
+<!-- 			connectionTimeout="5" connectionProperties="oracle.net.CONNECT_TIMEOUT=10000;oracle.jdbc.ReadTimeout=10000" />  -->
+<!-- 		<pool name="EventLog" driver="oracle.jdbc.driver.OracleDriver" connect="jdbc:oracle:thin:@10.1.61.45:1521:XE" -->
+<!-- 			user="XVARM" pswd="XVARM" count="5" preconnect="FALSE" unicode="FALSE" dbtype="2" -->
+<!-- 			connectionTimeout="5" connectionProperties="oracle.net.CONNECT_TIMEOUT=10000;oracle.jdbc.ReadTimeout=10000" /> -->
+
+ 			<pool name="Action" driver="org.sqlite.JDBC" connect="jdbc:sqlite:conf\xMonitorAction.db" 
+                       user="" pswd="" count="1" preconnect="FALSE" unicode="FALSE" dbtype="9" 
+                      connectionTimeout="5" connectionProperties="" />  
+			<pool name="Resource" driver="org.sqlite.JDBC" connect="jdbc:sqlite:conf\xMonitorResource.db" 
+                       user="" pswd="" count="1" preconnect="FALSE" unicode="FALSE" dbtype="9" 
+                        connectionTimeout="5" connectionProperties="" />  
+			<pool name="EventLog" driver="org.sqlite.JDBC" connect="jdbc:sqlite:conf\xMonitorEventLog.db" 
+                       user="" pswd="" count="1" preconnect="FALSE" unicode="FALSE" dbtype="9" 
+                      connectionTimeout="5" connectionProperties="" /> 
+
+		</AggregateDB>
+
+		<PostJob id="DBInserter" class="com.speno.xmon.event.PostJobAdapter"/>
+
+		<EventAdapter checkInterval="10">
+			<Adapter name="HealthChecker" class="com.speno.xmon.event.HealthCheckerAdapter" waitTime="60" postjob="DBInserter"/>
+		</EventAdapter>
+	</AmassServer>
+</XmAmServer>

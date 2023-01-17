@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<XmAmServer>
+	<AmassServer MyName="xMon01" IP="192.168.0.27">
+		<LogFilter>
+			<LogText>14ms</LogText>
+			<LogText>Length:5</LogText>
+			<LogsFolder>D:\DEV_ENV\workspace3\AgentLog_xMonAgent</LogsFolder>	
+		</LogFilter>
+
+		<!-- AServer  -> Agent	-->
+		<AgentNames>
+			<Agent>xtorm01</Agent>
+			<Agent>xtorm02</Agent>
+			<Agent>xtorm03</Agent>
+		</AgentNames>
+				
+		<Listener>
+			<!--  [ Agent   -> Server ]-->
+			<AmassServerPort>18881</AmassServerPort>			
+			<!--  [ Console -> Server ] -> Agent -->
+			<AmassServerReqPort>18880</AmassServerReqPort>			
+		</Listener>
+		<AggregateDB>
+			<Driver>org.sqlite.JDBC</Driver>
+			
+			<URL Type="TransAction">jdbc:sqlite:D:\DEV_ENV\workspace3\xMonitorTransAction.db</URL>
+			<URL Type="Action">jdbc:sqlite:D:\DEV_ENV\workspace3\xMonitorAction.db</URL>
+			<URL Type="Resource">jdbc:sqlite:D:\DEV_ENV\workspace3\xMonitorResource.db</URL>
+			
+			<!-- Action -->
+			<Repeat_ActionSec>1</Repeat_ActionSec>
+			<Repeat_ActionMin>1</Repeat_ActionMin>
+			<Repeat_ActionHour>1</Repeat_ActionHour>
+			<Repeat_ActionDay>1</Repeat_ActionDay >	
+			
+			<!--  Resource -->
+			<Repeat_ResourceSec>10</Repeat_ResourceSec>
+			<Repeat_ResourceMin>1</Repeat_ResourceMin>	
+			<Repeat_ResourceHour>1</Repeat_ResourceHour>
+			<Repeat_ResourceDay>1</Repeat_ResourceDay>
+			
+			<!--  집계 지연 시간 -->
+			<Postponed_ResourceSec>-1</Postponed_ResourceSec> 
+			<Postponed_ResourceMin>-1</Postponed_ResourceMin>	
+			<Postponed_ResourceHour>-1</Postponed_ResourceHour>
+			<Postponed_ResourceDay>-1</Postponed_ResourceDay>
+			
+			<ExpireRepeat_Min>1</ExpireRepeat_Min>
+			
+			<!--  집계 (유지) 만료시간 - Action --> 
+			<!--  86400 초: 24시간          -->
+			<!--  2880분: 2일              -->
+			<!--  360시: 15일              -->
+			<!--  30일                    -->
+			<Expire_ActionSec>900</Expire_ActionSec> 
+			<Expire_ActionMin>2880</Expire_ActionMin>
+			<Expire_ActionHour>360</Expire_ActionHour>
+			<Expire_ActionDay>30</Expire_ActionDay> 
+			
+			<!--  집계 (유지) 만료시간 - Resource -->
+			<Expire_ResourceSec>7200</Expire_ResourceSec> 
+			<Expire_ResourceMin>2880</Expire_ResourceMin>	
+			<Expire_ResourceHour>360</Expire_ResourceHour>
+			<Expire_ResourceDay>30</Expire_ResourceDay> 
+		</AggregateDB>
+		<Transaction_Timeout>600</Transaction_Timeout>
+	</AmassServer>
+</XmAmServer>

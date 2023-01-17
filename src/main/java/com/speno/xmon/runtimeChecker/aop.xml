@@ -1,0 +1,16 @@
+<aspectj>
+ <aspects>
+  <aspect name="com.speno.xmon.runtimeChecker.AgentUnitAspect" />
+  <!-- <aspect name="aspect" /> -->
+ </aspects>
+   
+   <weaver options="-verbose"/> 
+<!--
+ <weaver>
+  <include within="com.windfire.agents.data..*" />
+  <include within="com.windfire.agents.archive.*" />
+  <include within="com.windfire.agents.comm.*" />
+ </weaver>
+--> 
+
+</aspectj>

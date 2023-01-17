@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- default : original, obfuscate, [make_internal | make_develop_jar | make_prod 
+	| make_trial | make_lib] -->
+<project name="XMonitor_Agent" basedir="." default="make_server" xmlns:artifact="antlib:maven.artifact.ant">
+	<tstamp />
+
+	<property name="package.dir" value="package" />
+
+	<property name="company" value="SpenoCom Inc." />
+	<property name="name" value="xmonitor" />
+	<property name="agentname" value="xmonitor_agent" />
+	<property name="version" value="1.0.1 (${DSTAMP})" />
+	<property name="agentversion" value="1.0.1 (${DSTAMP})" />
+
+	<property name="src.dir" value="src/main/java" />
+	<property name="build.dir" value="classes" />
+	<property name="lib.dir" value="lib" />
+	
+	<!-- maven dependencies
+	<artifact:dependencies filesetId="deps.fileset" type="jar">
+	  <pom file="pom.xml"/>
+	</artifact:dependencies>
+	-->
+	<path id="classpath1">
+		<fileset dir="lib">
+			<include name="*.jar" />
+		</fileset>
+		<pathelement path="${build.dir}" />
+	</path>
+	
+	<target name="clean_classes" depends="" description="clean classes">
+		<delete includeEmptyDirs="true" failonerror="false">
+			<fileset dir="${build.dir}" includes="**/*" />
+		</delete>
+	</target>
+
+	<target name="build" depends="clean_classes"
+		description="Compile main source tree java files">
+		<mkdir dir="${build.dir}" />
+		<javac classpathref="classpath1" encoding="utf-8" destdir="${build.dir}" debug="true"
+			deprecation="false" optimize="false" failonerror="true" srcdir="${src.dir}">
+			<include name="com/**/*.java"/>
+		</javac>
+	</target>
+
+	<target name="clean_package" depends="" description="clean package">
+		<delete includeEmptyDirs="true" failonerror="false">
+			<fileset dir="${package.dir}" includes="**/*.class" />
+		</delete>
+	</target>
+
+	<target name="copyToPackage" depends="clean_package" description="copy class files">
+		<!-- <antcall target="clean_package"/> -->
+		<copy todir="${package.dir}/org">
+			<fileset dir="${build.dir}/org" />
+		</copy>
+		<copy todir="${package.dir}/com">
+			<fileset dir="${build.dir}/com" />
+		</copy>
+	</target>
+				
+	<target name="unjar_libraries" depends="">
+	    <unzip dest="${build.dir}">
+	        <fileset dir="${lib.dir}">
+	            <include name="jcl-over-slf4j-1.7.0.jar" />
+	            <include name="json-20080701.jar" />
+	            <include name="jdom2-2.0.5.jar" />
+	            <include name="log4j-1.2.14.jar" />
+	            <include name="mina-core-2.0.7.jar" />
+	            <include name="slf4j-api-1.7.0.jar" />
+	            <include name="slf4j-log4j12-1.7.0.jar" />
+	        </fileset>    
+	    </unzip>
+	</target>
+	
+	<path id="jar_base">
+		<fileset dir="${package.dir}">
+<!--			<include name="org/**/*.class" /> -->
+			<include name="com/**/*.class" />
+		</fileset>
+	</path>
+
+	<target name="make_server" depends="build, clean_package" description="Make jar file">
+		<copy todir="${package.dir}/com">
+			<fileset dir="${build.dir}/com" />
+		</copy>
+
+		<jar destfile="${package.dir}/jar/${name}_${DSTAMP}.jar" update="true">
+			<manifest>
+				<attribute name="Vendor" value="${company}" />
+				<attribute name="Title" value="${name} Original" />
+				<attribute name="Version" value="${version}" />
+			</manifest>
+			<path refid="jar_base" />
+		</jar>
+
+		<copy file="${package.dir}/jar/${name}_${DSTAMP}.jar" tofile="${package.dir}/jar/${name}.jar" />
+
+	</target>
+	
+	<target name="make_agent" depends="build,unjar_libraries,copyToPackage" description="Make agent jar file">
+		<jar destfile="${package.dir}/jar/${agentname}_${DSTAMP}.jar" update="true">
+			<manifest>
+				<attribute name="Vendor" value="${company}" />
+				<attribute name="Title" value="${agentname} Original" />
+				<attribute name="Version" value="${agentversion}" />
+			</manifest>
+
+			<fileset dir="${package.dir}">
+				<include name="com/speno/xmon/agent/*.class" />
+				<include name="com/speno/xmon/codedic/*.class" />
+				<include name="com/speno/xmon/comm/*.class" />
+				<include name="com/speno/xmon/comm/charset/*.class" />
+				<include name="com/speno/xmon/compress/*.class" />
+				<include name="com/speno/xmon/dataset/*.class" />
+				<include name="com/speno/xmon/env/*.class" />
+				<include name="com/speno/xmon/pcf/*.class" />
+				<include name="org/**/*.class" />
+			</fileset>
+		</jar>
+		<copy file="${package.dir}/jar/${agentname}_${DSTAMP}.jar" tofile="${package.dir}/jar/${agentname}.jar" />
+	</target>
+
+</project>

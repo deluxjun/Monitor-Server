@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<XmAgent>	
+	<Agent MyName="xtorm03">
+	    <Logger LogClass="com.speno.xmon.agent.LoggerDummy">
+			<Property LEVEL="3"/>
+		</Logger>
+
+		<LogId text="XtormAgent01"/>
+
+		<LogFilter text="ERROR"/>
+		<LogFilter text="Length:2"/>
+	</Agent>
+	<AmassServer
+		AmassServerIP="10.1.61.45"
+		AmassTransPort="18883"
+		AmassCommdPort="18882"
+		
+		SessionCheckRepeatMs="5000"
+		
+		MaxJsonDataLength="4096"
+		MaxJsonDataCount="500"
+	   
+		TransactionRepeatMs="100"
+		TransactionRetryConnectionMs="3000"
+		
+		PUTLogUseYN="Y"
+		PUTEventUseYN="Y"
+	/>
+	
+	<Commands>
+		<TransactionName>Tran</TransactionName>
+		<ResourceName>Reso</ResourceName>	
+	</Commands>
+	
+	<Command type="Reso" name="Reso_JavaHeap"
+		ClassPath="com.speno.xmon.agent.AmassJavaHeap"
+		ValueUnit="KB"
+		Title="자바힙"
+		Description="가나다"
+		AggreUseYN="Y"
+		HealthUseYN="Y">
+		<Resources name="JavaHeap" properties="USE,TOTAL"/>
+	</Command>
+	
+	<!-- <Command type="Reso" name="Reso_XvarmArchive"
+		ClassPath=""
+		ValueUnit="Byte"
+		Title=""
+		Description="a"
+		AggreUseYN="N"
+		HealthUseYN="N">
+		<Resources name="Archive01" properties="USE,TOTAL"/>
+		<Resources name="CAS01" properties="USE,TOTAL"/>
+	</Command>
+	
+	<Command type="Reso" name="Reso_Storage"
+		ClassPath="com.speno.xmon.agent.AmassStorage"
+		ValueUnit="GB"
+		Title="b"
+		Description="a"
+		AggreUseYN="N"
+		HealthUseYN="N">
+		<Resources name="C" properties="USE,TOTAL,MAX"/>
+		<Resources name="D" properties="USE,TOTAL"/>
+	</Command>
+	
+	<Command type="Reso" name="Reso_CpuUsage"
+		ClassPath="com.speno.xmon.agent.AmassCpu"
+		ValueUnit="%"
+		Title="b"
+		Description="a"
+		AggreUseYN="Y"
+		HealthUseYN="Y">
+		<Resources name="CpuUsage" properties="USE"/>
+	</Command> -->
+	
+	<Command type="Tran" name="Inquiry"
+		Title="dd"
+		Description="b"
+		AggreUseYN="Y"
+		HealthUseYN="Y"
+	/>
+	
+</XmAgent>
+
